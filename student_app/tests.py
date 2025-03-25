@@ -1,10 +1,13 @@
 from django.test import TestCase
-from student_app.models import Student
+from .models import Student
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
 
 # Create your tests here.
+
+
+## PART I
 class Test_student(TestCase):
     def test_001_student_with_improper_good_student_field(self):
         try:
@@ -13,15 +16,18 @@ class Test_student(TestCase):
                 student_email="thisIsAnEmail@school.com",
                 personal_email="thisIsAnEmail@gmail.com",
                 locker_number=13,
-                locker_combination = "12-33-44",
-                good_student = None
+                locker_combination="12-33-44",
+                good_student=None,
             )
 
             new_student.full_clean()
             self.fail()
         except IntegrityError as e:
             # print(e)
-            self.assertIn('null value in column "good_student" of relation "student_app_student" violates not-null constraint', str(e))
+            self.assertIn(
+                'null value in column "good_student" of relation "student_app_student" violates not-null constraint',
+                str(e),
+            )
 
     def test_002_student_with_improper_email_fields(self):
         try:
@@ -30,14 +36,16 @@ class Test_student(TestCase):
                 student_email="thisIsNotAnEmail",
                 personal_email=False,
                 locker_number=13,
-                locker_combination = "23-33-44",
-                good_student = True
+                locker_combination="23-33-44",
+                good_student=True,
             )
             new_student.full_clean()
             self.fail()
         except ValidationError as e:
             # print(e.message_dict)
-            self.assertTrue('student_email' in e.message_dict and 'personal_email' in e.message_dict)
+            self.assertTrue(
+                "student_email" in e.message_dict and "personal_email" in e.message_dict
+            )
 
     def test_003_student_with_improper_locker_number_fields(self):
         try:
@@ -46,14 +54,16 @@ class Test_student(TestCase):
                 student_email="thisIsAnEmail@school.com",
                 personal_email="thisIsAnEmail@gmail.com",
                 locker_number="None",
-                locker_combination = "23-33-44",
-                good_student = True
+                locker_combination="23-33-44",
+                good_student=True,
             )
             new_student.full_clean()
             self.fail()
         except Exception as e:
             # print(e)
-            self.assertTrue("Field 'locker_number' expected a number but got 'None'" in str(e))
+            self.assertTrue(
+                "Field 'locker_number' expected a number but got 'None'" in str(e)
+            )
 
     def test_004_student_with_improper_locker_combination_fields(self):
         try:
@@ -62,14 +72,14 @@ class Test_student(TestCase):
                 student_email="thisIsAnEmail@school.com",
                 personal_email="thisIsAnEmail@gmail.com",
                 locker_number=13,
-                locker_combination = None,
-                good_student = True
+                locker_combination=None,
+                good_student=True,
             )
             new_student.full_clean()
             self.fail()
         except IntegrityError as e:
             # print(e)
-            self.assertTrue("null value in column \"locker_combination\" " in str(e))
+            self.assertTrue('null value in column "locker_combination" ' in str(e))
 
     def test_005_student_with_improper_name_field(self):
         try:
@@ -78,29 +88,28 @@ class Test_student(TestCase):
                 student_email="thisIsAnEmail@school.com",
                 personal_email="thisIsAnEmail@gmail.com",
                 locker_number=13,
-                locker_combination = "12-12-12",
-                good_student = True
+                locker_combination="12-12-12",
+                good_student=True,
             )
             new_student.full_clean()
             self.fail()
         except Exception as e:
             # print(e)
-            self.assertTrue("null value in column \"name\" " in str(e))
+            self.assertTrue('null value in column "name" ' in str(e))
 
-    
     def test_006_student_with_proper_fields(self):
         new_student = Student.objects.create(
-            name = "John W. Wally",
-            student_email = "john@school.com",
-            personal_email = "john@gmail.com",
-            locker_number = 13,
-            locker_combination = "12-12-12",
-            good_student = True
+            name="John W. Wally",
+            student_email="john@school.com",
+            personal_email="john@gmail.com",
+            locker_number=13,
+            locker_combination="12-12-12",
+            good_student=True,
         )
         new_student.full_clean()
         self.assertIsNotNone(new_student)
 
-#  Part II
+    # PART II
 
     def test_007_student_with_repeated_student_email(self):
         try:
@@ -188,3 +197,88 @@ class Test_student(TestCase):
         )
         new_student.full_clean()
         self.assertIsNotNone(new_student)
+
+    ## PART III
+
+    def test_011_student_with_improper_name_format(self):
+        try:
+            new_student = Student.objects.create(
+                name="Maverick Macconnel",
+                student_email="mav@school.com",
+                personal_email="mav@gmail.com",
+            )
+            new_student.full_clean()
+            self.fail()
+        except ValidationError as e:
+            # print(e.message_dict)
+            self.assertTrue(
+                'Name must be in the format "First Middle Initial. Last"'
+                in e.message_dict["name"]
+            )
+
+    def test_012_student_with_improper_student_email(self):
+        try:
+            new_student = Student.objects.create(
+                name="Maverick H. Macconnel",
+                student_email="mav@school.org",
+                personal_email="mav@gmail.com",
+            )
+            new_student.full_clean()
+            self.fail()
+        except ValidationError as e:
+            # print(e.message_dict)
+            self.assertTrue(
+                'Invalid school email format. Please use an email ending with "@school.com".'
+                in e.message_dict["student_email"]
+            )
+
+    def test_013_student_with_improper_locker_combination(self):
+        try:
+            new_student = Student.objects.create(
+                name="Maverick H. Macconnel",
+                student_email="mav@school.com",
+                personal_email="mav@gmail.com",
+                locker_combination="zz-234-p1",
+            )
+            new_student.full_clean()
+            self.fail()
+        except ValidationError as e:
+            # print(e.message_dict)
+            self.assertTrue(
+                'Combination must be in the format "12-12-12"'
+                in e.message_dict["locker_combination"]
+            )
+
+    def test_014_student_with_low_locker_number(self):
+        try:
+            new_student = Student.objects.create(
+                name="Maverick H. Macconnel",
+                student_email="mav@school.com",
+                personal_email="mav@gmail.com",
+                locker_number=0,
+            )
+            new_student.full_clean()
+            self.fail()
+        except ValidationError as e:
+            # print(e.message_dict)
+            self.assertTrue(
+                "Ensure this value is greater than or equal to 1."
+                in e.message_dict["locker_number"]
+            )
+
+    def test_015_student_with_high_locker_number(self):
+        try:
+            new_student = Student.objects.create(
+                name="Maverick H. Macconnel",
+                student_email="mav@school.com",
+                personal_email="mav@gmail.com",
+                locker_number=350,
+            )
+            new_student.full_clean()
+            self.fail()
+        except ValidationError as e:
+            # print(e.message_dict)
+            self.assertTrue(
+                "Ensure this value is less than or equal to 200."
+                in e.message_dict["locker_number"]
+            )
