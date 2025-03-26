@@ -1,0 +1,27 @@
+
+[
+  {
+    "model": "student_app.student",
+    "pk": 1,
+    "fields": {
+      "name": "John W. Watson",
+      "student_email": "thisIsAnEmail@school.com",
+      "personal_email": "thisIsAnEmail@gmail.com",
+      "locker_number": 13,
+      "locker_combination": "12-33-44",
+      "good_student": true
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 2,
+    "fields": {
+      "name": "Mary Jane",
+      "student_email": "maryj@school.com",
+      "personal_email": "mjane@gmail.com",
+      "locker_number": 21,
+      "locker_combination": "10-22-34",
+      "good_student": false
+    }
+  }
+]

@@ -2,6 +2,7 @@ from django.test import TestCase
 from .models import Student
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
+from .serializers import StudentAllSerializer, StudentSerializer
 
 
 # Create your tests here.
@@ -282,3 +283,70 @@ class Test_student(TestCase):
                 "Ensure this value is less than or equal to 200."
                 in e.message_dict["locker_number"]
             )
+
+    ## PART IV
+
+    def test_016_student_serializer_with_proper_data(self):
+        data = {
+            "name": "John W. Watson",
+            "student_email": "thisIsAnEmail@school.com",
+            "locker_number": 13,
+        }
+
+        serializer = StudentSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+
+    def test_017_student_serializer_with_proper_data(self):
+        student = Student(
+            **{
+                "name": "John W. Watson",
+                "student_email": "thisIsAnEmail@school.com",
+                "locker_number": 13,
+            }
+        )
+
+        serializer = StudentSerializer(student)
+        self.assertEqual(
+            serializer.data,
+            {
+                "name": "John W. Watson",
+                "student_email": "thisIsAnEmail@school.com",
+                "locker_number": 13,
+            }
+        )
+
+    def test_018_student_serializer_all_with_proper_data(self):
+        data = {
+            "name": "John W. Watson",
+            "student_email": "thisIsAnEmail@school.com",
+            "personal_email": "thisIsAnEmail@gmail.com",
+            "locker_number": 13,
+            "locker_combination": "12-33-44",
+            "good_student": True,
+        }
+        serializer = StudentAllSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+
+    def test_019_student_serializer_all_with_proper_reponse(self):
+        stud = Student(
+            **{
+                "name": "John W. Watson",
+                "student_email": "thisIsAnEmail@school.com",
+                "personal_email": "thisIsAnEmail@gmail.com",
+                "locker_number": 13,
+                "locker_combination": "12-33-44",
+                "good_student": True,
+            }
+        )
+        serializer = StudentAllSerializer(stud)
+        self.assertEqual(
+            serializer.data,
+            {
+                "name": "John W. Watson",
+                "student_email": "thisIsAnEmail@school.com",
+                "personal_email": "thisIsAnEmail@gmail.com",
+                "locker_number": 13,
+                "locker_combination": "12-33-44",
+                "good_student": True,
+            }
+        )
