@@ -46,7 +46,7 @@
     "pk": 2,
     "fields": {
       "grade": 97.0,
-      "subject": 2,
+      "a_subject": 2,
       "student": 1
     }
   },
@@ -55,7 +55,7 @@
     "pk":1,
     "fields": {
       "grade": 95.0,
-      "subject": 1,
+      "a_subject": 1,
       "student": 2
     }
   }

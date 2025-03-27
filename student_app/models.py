@@ -1,13 +1,29 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+from decimal import Decimal
 import re
-
+from .validators import validate_professor, validate_subject
 
 # create subject class here
 class Subject(models.Model):
-    subject_name = models.CharField(unique=True, default="Unknown", null=False)
-    professor = models.CharField(unique=False, default="Mr. Cahan", null=False)
+    subject_name = models.CharField(
+        unique=True, default="Unknown", null=False,
+        validators=[validate_subject])
+    professor = models.CharField(
+        unique=False, default="Mr. Cahan", null=False,
+        validators=[validate_professor])
     # the related_name="students" in the Student class will create an attribute of Subject that contains all the students in that subject
+    def add_a_student(self, student_id):
+        if self.students.count() == 31:
+            raise Exception("This subject is full!")
+        else:
+            stud_inst = Student.objects.get(id=student_id)
+            self.students.add(stud_inst)
+    
+    def drop_a_student(self, student_id):
+        # if self.students.count() ==
+        stud_inst = Student.objects.get(id=student_id)
+        self.students.remove(stud_inst)
 
 
 class Student(models.Model):
@@ -32,9 +48,13 @@ class Student(models.Model):
         self.good_student = is_good_student
         self.full_clean()
         self.save()
-e
+        
+
 # create grade class here 
+# Decimal("0.00") is represented as a string ensures exactly 0.00 or 100.00 as the max
 class Grade(models.Model):
-    grade = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="grades")
+    grade = models.DecimalField(
+        max_digits=5, decimal_places=2, 
+        validators=[MinValueValidator(Decimal("0.00")), MaxValueValidator(Decimal("100.00"))])
+    a_subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="grades")
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="grades")
