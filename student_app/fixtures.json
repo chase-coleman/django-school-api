@@ -1,0 +1,63 @@
+[
+  {
+    "model": "student_app.student",
+    "pk": 1,
+    "fields": {
+      "name": "John W. Watson",
+      "student_email": "thisIsAnEmail@school.com",
+      "personal_email": "thisIsAnEmail@gmail.com",
+      "locker_number": 13,
+      "locker_combination": "12-33-44",
+      "good_student": true,
+      "subjects": [1, 2]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 2,
+    "fields": {
+      "name": "Mary Jane",
+      "student_email": "maryj@school.com",
+      "personal_email": "mjane@gmail.com",
+      "locker_number": 21,
+      "locker_combination": "10-22-34",
+      "good_student": false,
+      "subjects": [2]
+    }
+  },
+  {
+    "model": "student_app.subject",
+    "pk":1,
+    "fields": {
+      "subject_name": "Intro to Python",
+      "professor": "Professor Coleman"
+    }
+  },
+  {
+    "model": "student_app.subject",
+    "pk": 2,
+    "fields": {
+      "subject_name": "Intro to Javascript",
+      "professor": "Professor Lincoln"
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 2,
+    "fields": {
+      "grade": 97.0,
+      "subject": 2,
+      "student": 1
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk":1,
+    "fields": {
+      "grade": 95.0,
+      "subject": 1,
+      "student": 2
+    }
+  }
+]
+
