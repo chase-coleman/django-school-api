@@ -6,7 +6,6 @@ from student_app.serializers import *
 
 # Create your tests here.
 
-
 ## PART I
 class Test_student(TestCase):
     def test_001_student_with_improper_good_student_field(self):
