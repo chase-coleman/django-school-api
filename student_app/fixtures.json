@@ -1,62 +1,442 @@
 [
   {
     "model": "student_app.student",
-    "pk": 1,
+    "pk": 3,
     "fields": {
-      "name": "John W. Watson",
-      "student_email": "thisIsAnEmail@school.com",
-      "personal_email": "thisIsAnEmail@gmail.com",
-      "locker_number": 13,
-      "locker_combination": "12-33-44",
-      "good_student": true
+      "name": "Francisco R. Avila",
+      "student_email": "francisco@school.com",
+      "personal_email": "francisco@gmail.com",
+      "locker_number": 1,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        1
+      ]
     }
   },
   {
     "model": "student_app.student",
-    "pk": 2,
+    "pk": 4,
     "fields": {
-      "name": "Mary Jane",
-      "student_email": "maryj@school.com",
-      "personal_email": "mjane@gmail.com",
-      "locker_number": 21,
-      "locker_combination": "10-22-34",
-      "good_student": false,
-      "subjects": [2]
+      "name": "Adam B. Cahan",
+      "student_email": "adam@school.com",
+      "personal_email": "adam@gmail.com",
+      "locker_number": 2,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 5,
+    "fields": {
+      "name": "This I. Zaynab",
+      "student_email": "zaynab@school.com",
+      "personal_email": "zaynab@gmail.com",
+      "locker_number": 3,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 6,
+    "fields": {
+      "name": "Tanjaro D. Kamado",
+      "student_email": "tanjaro@school.com",
+      "personal_email": "tanjaro@gmail.com",
+      "locker_number": 4,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 7,
+    "fields": {
+      "name": "Mark M. Grayson",
+      "student_email": "mark@school.com",
+      "personal_email": "mark@gmail.com",
+      "locker_number": 5,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        1,
+        3,
+        5
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 8,
+    "fields": {
+      "name": "Ash A. Katchum",
+      "student_email": "ash@school.com",
+      "personal_email": "ash@gmail.com",
+      "locker_number": 6,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 9,
+    "fields": {
+      "name": "Nezuko M. Kamato",
+      "student_email": "nezuko@school.com",
+      "personal_email": "nezuko@gmail.com",
+      "locker_number": 7,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 10,
+    "fields": {
+      "name": "Monkey D. Luffy",
+      "student_email": "monkey@school.com",
+      "personal_email": "monkey@gmail.com",
+      "locker_number": 8,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        1,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 11,
+    "fields": {
+      "name": "Monkey D. Ace",
+      "student_email": "ace@school.com",
+      "personal_email": "ace@gmail.com",
+      "locker_number": 9,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "student_app.student",
+    "pk": 12,
+    "fields": {
+      "name": "Nick M. Smith",
+      "student_email": "nick@school.com",
+      "personal_email": "nick@gmail.com",
+      "locker_number": 10,
+      "locker_combination": "12-12-12",
+      "good_student": true,
+      "subjects": [
+        1,
+        2,
+        5
+      ]
     }
   },
   {
     "model": "student_app.subject",
-    "pk":1,
+    "pk": 1,
     "fields": {
-      "subject_name": "Intro to Python",
-      "professor": "Professor Coleman"
+      "subject_name": "Python",
+      "professor": "Professor Adam"
     }
   },
   {
     "model": "student_app.subject",
     "pk": 2,
     "fields": {
-      "subject_name": "Intro to Javascript",
-      "professor": "Professor Lincoln"
+      "subject_name": "Javascript",
+      "professor": "Professor Zaynab"
+    }
+  },
+  {
+    "model": "student_app.subject",
+    "pk": 3,
+    "fields": {
+      "subject_name": "C#",
+      "professor": "Professor Benjamin"
+    }
+  },
+  {
+    "model": "student_app.subject",
+    "pk": 4,
+    "fields": {
+      "subject_name": "History",
+      "professor": "Professor Nick"
+    }
+  },
+  {
+    "model": "student_app.subject",
+    "pk": 5,
+    "fields": {
+      "subject_name": "Philosophy",
+      "professor": "Professor Avila"
     }
   },
   {
     "model": "student_app.grade",
-    "pk": 2,
+    "pk": 1,
     "fields": {
-      "grade": 97.0,
-      "a_subject": 2,
-      "student": 1
-    }
-  },
-  {
-    "model": "student_app.grade",
-    "pk":1,
-    "fields": {
-      "grade": 95.0,
+      "grade": "17.33",
       "a_subject": 1,
-      "student": 2
+      "student": 3
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 2,
+    "fields": {
+      "grade": "79.43",
+      "a_subject": 1,
+      "student": 4
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 3,
+    "fields": {
+      "grade": "12.88",
+      "a_subject": 2,
+      "student": 4
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 4,
+    "fields": {
+      "grade": "27.77",
+      "a_subject": 3,
+      "student": 4
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 5,
+    "fields": {
+      "grade": "47.62",
+      "a_subject": 3,
+      "student": 5
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 6,
+    "fields": {
+      "grade": "93.07",
+      "a_subject": 4,
+      "student": 5
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 7,
+    "fields": {
+      "grade": "73.96",
+      "a_subject": 5,
+      "student": 5
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 8,
+    "fields": {
+      "grade": "21.75",
+      "a_subject": 2,
+      "student": 6
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 9,
+    "fields": {
+      "grade": "68.52",
+      "a_subject": 3,
+      "student": 6
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 10,
+    "fields": {
+      "grade": "14.32",
+      "a_subject": 4,
+      "student": 6
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 11,
+    "fields": {
+      "grade": "26.14",
+      "a_subject": 1,
+      "student": 7
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 12,
+    "fields": {
+      "grade": "31.18",
+      "a_subject": 3,
+      "student": 7
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 13,
+    "fields": {
+      "grade": "96.21",
+      "a_subject": 5,
+      "student": 7
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 14,
+    "fields": {
+      "grade": "69.19",
+      "a_subject": 1,
+      "student": 8
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 15,
+    "fields": {
+      "grade": "62.10",
+      "a_subject": 2,
+      "student": 8
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 16,
+    "fields": {
+      "grade": "61.51",
+      "a_subject": 3,
+      "student": 8
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 17,
+    "fields": {
+      "grade": "18.61",
+      "a_subject": 3,
+      "student": 9
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 18,
+    "fields": {
+      "grade": "1.07",
+      "a_subject": 4,
+      "student": 9
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 19,
+    "fields": {
+      "grade": "10.03",
+      "a_subject": 5,
+      "student": 9
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 20,
+    "fields": {
+      "grade": "63.01",
+      "a_subject": 1,
+      "student": 10
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 21,
+    "fields": {
+      "grade": "1.17",
+      "a_subject": 4,
+      "student": 10
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 22,
+    "fields": {
+      "grade": "48.92",
+      "a_subject": 5,
+      "student": 10
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 23,
+    "fields": {
+      "grade": "17.30",
+      "a_subject": 4,
+      "student": 11
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 24,
+    "fields": {
+      "grade": "69.22",
+      "a_subject": 1,
+      "student": 12
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 25,
+    "fields": {
+      "grade": "68.58",
+      "a_subject": 2,
+      "student": 12
+    }
+  },
+  {
+    "model": "student_app.grade",
+    "pk": 26,
+    "fields": {
+      "grade": "27.73",
+      "a_subject": 5,
+      "student": 12
     }
   }
 ]
-

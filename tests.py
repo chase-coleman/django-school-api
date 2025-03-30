@@ -498,3 +498,4 @@ class Test_student(TestCase):
         except DataError as e:
             # print(e)
             self.assertTrue("numeric field overflow" in str(e))
+
