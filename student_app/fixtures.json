@@ -8,8 +8,7 @@
       "personal_email": "thisIsAnEmail@gmail.com",
       "locker_number": 13,
       "locker_combination": "12-33-44",
-      "good_student": true,
-      "subjects": [1, 2]
+      "good_student": true
     }
   },
   {

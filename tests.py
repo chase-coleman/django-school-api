@@ -356,7 +356,7 @@ class Test_student(TestCase):
             },
         )
 
-    # PART V
+    # # PART V
     def test_020_student_with_not_enough_classes(self):
         try:
             new_student = Student.objects.create(

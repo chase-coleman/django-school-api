@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from decimal import Decimal
 import re
-from .validators import validate_professor, validate_subject
+from .validators import validate_professor, validate_subject, validate_grade
 
 # create subject class here
 class Subject(models.Model):
@@ -21,9 +21,10 @@ class Subject(models.Model):
             self.students.add(stud_inst)
     
     def drop_a_student(self, student_id):
-        # if self.students.count() ==
-        stud_inst = Student.objects.get(id=student_id)
-        self.students.remove(stud_inst)
+        if not self.students.exists():
+            raise Exception("This subject is empty!")
+        else:
+            self.students.remove(student_id)
 
 
 class Student(models.Model):
@@ -48,13 +49,24 @@ class Student(models.Model):
         self.good_student = is_good_student
         self.full_clean()
         self.save()
-        
+    
+    def remove_subject(self, subject_id):
+        if not self.subjects.exists():
+            raise Exception("This students class schedule is empty!")
+        else:
+            self.subjects.remove(subject_id)
+
+    def add_subject(self, subject_id):
+        if self.subjects.count() == 8:
+            raise Exception("This students class schedule is full!")
+        else:
+            self.subjects.add(subject_id)
 
 # create grade class here 
 # Decimal("0.00") is represented as a string ensures exactly 0.00 or 100.00 as the max
 class Grade(models.Model):
     grade = models.DecimalField(
         max_digits=5, decimal_places=2, 
-        validators=[MinValueValidator(Decimal("0.00")), MaxValueValidator(Decimal("100.00"))])
+        validators=[validate_grade])
     a_subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="grades")
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="grades")
