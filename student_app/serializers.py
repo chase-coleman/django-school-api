@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer 
 from .models import Student, Subject, Grade 
+from rest_framework import serializers
 
 class StudentIDSerializer(ModelSerializer):
   class Meta:
@@ -13,9 +14,11 @@ class StudentAllSerializer(ModelSerializer):
             'locker_number', 'locker_combination', 'good_student', 'subjects']
 
 
-
 class SubjectSerializer(ModelSerializer):
-  students = StudentAllSerializer(many=True)
+  students = serializers.PrimaryKeyRelatedField(
+    queryset=Student.objects.all(),
+    many=True,
+    required=False)
 
   class Meta:
     model = Subject 
