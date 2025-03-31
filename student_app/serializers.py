@@ -13,15 +13,13 @@ class StudentAllSerializer(ModelSerializer):
             'locker_number', 'locker_combination', 'good_student', 'subjects']
 
 class SubjectSerializer(ModelSerializer):
+  students = StudentAllSerializer(many=True)
+
   class Meta:
     model = Subject 
     fields = ['subject_name', 'professor', 'students']
-  
-class SubjectAllSerializer(ModelSerializer):
-  class Meta:
-    model = Subject
-    fields = ['subject_name', 'professor', 'students']
-  
+
+
 class GradeSerializer(ModelSerializer):
   class Meta:
     model = Grade 

@@ -1,12 +1,12 @@
 from django.test import TestCase, Client
 from django.urls import reverse, resolve
-from .answers import all_students, all_subjects
+from answers import all_students, all_subjects
 import json
 
 
 class Test_endpoints(TestCase):
     fixtures = [
-      "student_app/fixtures.json",
+        "student_app/fixtures.json",
     ]
 
     def setUp(self):
