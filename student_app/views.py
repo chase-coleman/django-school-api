@@ -2,19 +2,58 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from student_app.serializers import *
 from rest_framework.views import Response, APIView
-import pprint
+from rest_framework.status import HTTP_404_NOT_FOUND
 from decimal import Decimal
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
+
+class A_student(APIView):
+   def get(self, request, id):
+        all_subjects = get_subjects()
+        all_students = get_students_subjects(all_subjects)
+        try:
+            student_answer = Student.objects.get(id=id)
+            student_ser = StudentIDSerializer(student_answer).data
+
+            student_return = next((student for student in all_students if student['name'] == student_ser['name']))
+                # print(student_return)
+            return Response(student_return)
+        except Student.DoesNotExist:
+            return Response('Student does not exist', status=HTTP_404_NOT_FOUND)
+    #   print(student_ser)
+
+class A_subject(APIView):
+   def get(self, request, subject):
+    #   print(name.title())
+        all_subjects = get_subjects()
+        try:
+            subject_return = next((sub for sub in all_subjects if sub['subject_name'] == subject.title()))
+            # print(subject_return)
+            return Response(subject_return)
+        except StopIteration:
+           return Response('Subject not found', status=HTTP_404_NOT_FOUND)
+        
 
 
 # class-based views
 class All_students(APIView):
     # create methods for all http verbs (get, post, put, delete)
   def get(self, request):
-    students = StudentAllSerializer(Student.objects.all(), many=True).data
     all_subjects = get_subjects()
-    
+    students = get_students_subjects(all_subjects)
+    return Response(students)
+
+
+class All_subjects(APIView):
+    def get(self, request):
+      # grabs the list of all subjects in proper formatting 
+      all_subjects = get_subjects()
+      # print(answer)
+      return Response(all_subjects)
+
+def get_students_subjects(all_subjects):
+    students = StudentAllSerializer(Student.objects.all(), many=True).data
     # loops through each student
     for student in students:
         # empty variable that we will store each students subjects in
@@ -31,16 +70,7 @@ class All_students(APIView):
             student_subjects.append(subject_to_add)
         # reassign the student['subject'] list as the list of subject dictionaries         
         student['subjects'] = student_subjects
-    return Response(students)
-
-
-class All_subjects(APIView):
-    def get(self, request):
-      # grabs the list of all subjects in proper formatting 
-      all_subjects = get_subjects()
-      # print(answer)
-      return Response(all_subjects)
-
+    return students
 
 def get_subjects():
   # grab all subjects 

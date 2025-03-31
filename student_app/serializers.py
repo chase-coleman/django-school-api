@@ -1,16 +1,18 @@
 from rest_framework.serializers import ModelSerializer 
 from .models import Student, Subject, Grade 
 
-class StudentSerializer(ModelSerializer):
+class StudentIDSerializer(ModelSerializer):
   class Meta:
     model = Student
-    fields = ['name', 'student_email','locker_number']
+    fields = ['id', 'name', 'student_email','locker_number']
 
 class StudentAllSerializer(ModelSerializer):
   class Meta:
     model = Student
     fields = ['name', 'student_email', 'personal_email', 
             'locker_number', 'locker_combination', 'good_student', 'subjects']
+
+
 
 class SubjectSerializer(ModelSerializer):
   students = StudentAllSerializer(many=True)
