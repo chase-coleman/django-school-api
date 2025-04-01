@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from student_app.serializers import *
 from rest_framework.views import Response, APIView
-from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_204_NO_CONTENT
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
 
@@ -40,6 +40,14 @@ class All_students(APIView):
             return Response(StudentAllSerializer(saved_student).data, status=HTTP_201_CREATED)
         else:
             return Response(new_student.errors, status=HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, id):
+        try:
+            student_to_delete = Student.objects.get(id=id)
+            student_to_delete.delete()        
+            return Response({"MESSAGE": "Student was removed successfully"}, status=HTTP_204_NO_CONTENT)
+        except:
+            return Response({"ERROR": 'student not found'}, status=HTTP_404_NOT_FOUND)
 
 
 class A_subject(APIView):
@@ -60,6 +68,19 @@ class All_subjects(APIView):
         all_subjects = get_subjects()
         # print(answer)
         return Response(all_subjects)
+
+    def put(self, request, subject):
+        data = request.data
+        try:
+            grabbed_subject = Subject.objects.get(subject_name=subject.title())
+            subject_ser = SubjectSerializer(grabbed_subject, data=data, partial=True)
+            # print(subject_ser.data)
+            if subject_ser.is_valid():
+                subject_ser.save()
+                return Response({"MESSAGE": "Subject was successfully updated."}, status=HTTP_200_OK)
+            return Response(subject_ser.errors, status=HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"ERROR": "Subject not found"}, status=HTTP_404_NOT_FOUND)
     
     def post(self, request):
         # print("subjects.post() is being called!")
@@ -72,7 +93,14 @@ class All_subjects(APIView):
             return Response(SubjectSerializer(saved_subject).data, status=HTTP_201_CREATED)
         else:
             return Response(new_subject.errors, status=HTTP_400_BAD_REQUEST)
-
+    
+    def delete(self, request, subject):
+        try:
+            subject_to_delete = Subject.objects.get(subject_name=subject.title())
+            subject_to_delete.delete()
+            return Response({"MESSAGE": "Subject was removed successfully"}, status=HTTP_204_NO_CONTENT)
+        except:
+            return Response({"ERROR": "Subject not found"}, status=HTTP_404_NOT_FOUND)
 
 """
 HELPER FUNCTIONS 
