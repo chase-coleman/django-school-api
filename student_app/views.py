@@ -32,6 +32,18 @@ class All_students(APIView):
         students = get_students_subjects(all_subjects)
         return Response(students)
     
+    def put(self, request, id):
+        try:
+            data = request.data
+            grabbed_student = Student.objects.get(id=id)
+            student_ser = StudentAllSerializer(grabbed_student, data=data, partial=True)
+            if student_ser.is_valid():
+                student_ser.save()
+                return Response({"MESSAGE": "Student info was successfully updated!"}, status=HTTP_200_OK)
+            return Response(student_ser.errors, status=HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"ERROR": "Student not found"}, status=HTTP_404_NOT_FOUND)
+
     def post(self, request):
         new_student = StudentAllSerializer(data=request.data)
         
