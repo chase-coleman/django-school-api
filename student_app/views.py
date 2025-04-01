@@ -1,12 +1,44 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 from student_app.serializers import *
-from rest_framework.views import Response, APIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.status import HTTP_404_NOT_FOUND, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_204_NO_CONTENT
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
+
+
+class All_grades(APIView):
+    def get(self, request):
+        all_grades = GradeSerializer(Grade.objects.all(), many=True).data 
+        return Response(all_grades)
+    
+    def put(self, request, id):
+        # gets the searched subject, or returns a 404 status
+        grabbed_grade = get_object_or_404(Grade, id=id)
+        # serializes grade obj w/ new data input
+        grade_ser = GradeSerializer(grabbed_grade, data=request.data, partial=True)
+        # checks if the serialized grade data is valid
+        if grade_ser.is_valid():
+            grade_ser.save() # saves it 
+            return Response({'MESSAGE': "Grade was successfully updated!"}, status=HTTP_200_OK) # returns a 200 status
+        # if not valid, returns 400 status
+        return Response(grade_ser.errors, status=HTTP_400_BAD_REQUEST) 
+
+    def post(self, request):
+        new_grade = GradeSerializer(data=request.data)
+         # checks if new_student has valid data entry
+        if new_grade.is_valid(): 
+            saved_grade = new_grade.save() # saves it
+            return Response(GradeSerializer(saved_grade).data, status=HTTP_201_CREATED) # returns 201 status
+        return Response(new_grade.errors, status=HTTP_400_BAD_REQUEST) # if not valid data entry, returns 400 status
+
+    def delete(self, request, id):
+        grade_to_delete = get_object_or_404(Grade, id=id) # gets the searched subject, or returns a 404 status
+        grade_to_delete.delete() # deletes it if found 
+        return Response({"MESSAGE": "Grade was successfully deleted"}, status=HTTP_204_NO_CONTENT) # returns a 204 status
+
 
 
 class A_student(APIView):
@@ -26,6 +58,9 @@ class A_student(APIView):
 
 # class-based views
 class All_students(APIView):
+
+    # need to make a method to be able to add subjects into the student list of subjects
+
     def get(self, request):
         # calls helper function to get all the subjects
         all_subjects = get_subjects() 
