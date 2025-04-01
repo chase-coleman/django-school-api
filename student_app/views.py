@@ -26,40 +26,42 @@ class A_student(APIView):
 
 # class-based views
 class All_students(APIView):
-    # create methods for all http verbs (get, post, put, delete)
     def get(self, request):
-        all_subjects = get_subjects()
-        students = get_students_subjects(all_subjects)
+        # calls helper function to get all the subjects
+        all_subjects = get_subjects() 
+        # calls helper function to get all students w/ their subjects
+        students = get_students_subjects(all_subjects) 
         return Response(students)
     
     def put(self, request, id):
-        try:
-            data = request.data
-            grabbed_student = Student.objects.get(id=id)
-            student_ser = StudentAllSerializer(grabbed_student, data=data, partial=True)
-            if student_ser.is_valid():
-                student_ser.save()
-                return Response({"MESSAGE": "Student info was successfully updated!"}, status=HTTP_200_OK)
-            return Response(student_ser.errors, status=HTTP_400_BAD_REQUEST)
-        except:
-            return Response({"ERROR": "Student not found"}, status=HTTP_404_NOT_FOUND)
+         # gets the searched student, or returns a 404 status
+        grabbed_student = get_object_or_404(Student, id=id)
+        # serializes student obj
+        student_ser = StudentAllSerializer(grabbed_student, data=request.data, partial=True) 
+        # checks if serialized student is valid w/ new data 
+        if student_ser.is_valid(): 
+            # if yes -> saves it 
+            student_ser.save() 
+            # returns 200 status
+            return Response({"MESSAGE": "Student info was successfully updated!"}, status=HTTP_200_OK) 
+        # if not valid, returns 400 status
+        return Response(student_ser.errors, status=HTTP_400_BAD_REQUEST) 
 
     def post(self, request):
-        new_student = StudentAllSerializer(data=request.data)
-        
-        if new_student.is_valid():
-            saved_student = new_student.save()
-            return Response(StudentAllSerializer(saved_student).data, status=HTTP_201_CREATED)
-        else:
-            return Response(new_student.errors, status=HTTP_400_BAD_REQUEST)
+        # serializes new_student info
+        new_student = StudentAllSerializer(data=request.data) 
+        # checks if new_student has valid data entry
+        if new_student.is_valid(): 
+            saved_student = new_student.save() # saves it
+            # returns 201 status
+            return Response(StudentAllSerializer(saved_student).data, status=HTTP_201_CREATED) 
+         # if not valid data entry, returns 400 status
+        return Response(new_student.errors, status=HTTP_400_BAD_REQUEST)
     
     def delete(self, request, id):
-        try:
-            student_to_delete = Student.objects.get(id=id)
-            student_to_delete.delete()        
-            return Response({"MESSAGE": "Student was removed successfully"}, status=HTTP_204_NO_CONTENT)
-        except:
-            return Response({"ERROR": 'student not found'}, status=HTTP_404_NOT_FOUND)
+        student_to_delete = get_object_or_404(Student, id=id) # gets the searched student, or returns a 404 status
+        student_to_delete.delete() # deletes student record 
+        return Response({"MESSAGE": "Student was removed successfully"}, status=HTTP_204_NO_CONTENT) # returns 204 status
 
 
 class A_subject(APIView):
@@ -74,45 +76,38 @@ class A_subject(APIView):
         except StopIteration:
             return Response("Subject not found", status=HTTP_404_NOT_FOUND)
 
+
+
 class All_subjects(APIView):
     def get(self, request):
-        # grabs the list of all subjects in proper formatting
-        all_subjects = get_subjects()
-        # print(answer)
+        all_subjects = get_subjects() # calls helper function to get all the subjects
         return Response(all_subjects)
 
     def put(self, request, subject):
-        data = request.data
-        try:
-            grabbed_subject = Subject.objects.get(subject_name=subject.title())
-            subject_ser = SubjectSerializer(grabbed_subject, data=data, partial=True)
-            # print(subject_ser.data)
-            if subject_ser.is_valid():
-                subject_ser.save()
-                return Response({"MESSAGE": "Subject was successfully updated."}, status=HTTP_200_OK)
-            return Response(subject_ser.errors, status=HTTP_400_BAD_REQUEST)
-        except:
-            return Response({"ERROR": "Subject not found"}, status=HTTP_404_NOT_FOUND)
+        # gets the searched subject, or returns a 404 status
+        grabbed_subject = get_object_or_404(Subject, subject_name=subject.title())  
+        # serializes subject obj w/ new data input
+        subject_ser = SubjectSerializer(grabbed_subject, data=request.data, partial=True)  
+        # checks if new_student has valid data entry
+        if subject_ser.is_valid(): 
+            subject_ser.save() # if yes -> saves it 
+            return Response({"MESSAGE": "Subject was successfully updated."}, status=HTTP_200_OK) # returns 200 status
+        return Response(subject_ser.errors, status=HTTP_400_BAD_REQUEST) # if not valid data input, returns 400 status
     
     def post(self, request):
-        # print("subjects.post() is being called!")
-        # print(request.data)
-        new_subject = SubjectSerializer(data=request.data)
-        
-        if new_subject.is_valid():
-            saved_subject = new_subject.save()
-            print(SubjectSerializer(saved_subject).data)
-            return Response(SubjectSerializer(saved_subject).data, status=HTTP_201_CREATED)
-        else:
-            return Response(new_subject.errors, status=HTTP_400_BAD_REQUEST)
+        # serializes new_subject info 
+        new_subject = SubjectSerializer(data=request.data) 
+        # checks if new_subject has valid data entry
+        if new_subject.is_valid(): 
+            # if yes -> saves new subject into db
+            saved_subject = new_subject.save() 
+            return Response(SubjectSerializer(saved_subject).data, status=HTTP_201_CREATED) # returns 201 status
+        return Response(new_subject.errors, status=HTTP_400_BAD_REQUEST) # if not valid data input, returns 400 status
     
-    def delete(self, request, subject):
-        try:
-            subject_to_delete = Subject.objects.get(subject_name=subject.title())
-            subject_to_delete.delete()
-            return Response({"MESSAGE": "Subject was removed successfully"}, status=HTTP_204_NO_CONTENT)
-        except:
-            return Response({"ERROR": "Subject not found"}, status=HTTP_404_NOT_FOUND)
+    def delete(self, request, subject): 
+        subject_to_delete = get_object_or_404(Subject, subject_name=subject.title()) # gets the searched subject, or returns a 404 status
+        subject_to_delete.delete() # deletes student record 
+        return Response({"MESSAGE": "Subject was removed successfully"}, status=HTTP_204_NO_CONTENT) # returns 204 status
 
 """
 HELPER FUNCTIONS 
