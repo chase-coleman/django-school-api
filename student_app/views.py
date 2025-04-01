@@ -31,6 +31,16 @@ class All_students(APIView):
         all_subjects = get_subjects()
         students = get_students_subjects(all_subjects)
         return Response(students)
+    
+    def post(self, request):
+        new_student = StudentAllSerializer(data=request.data)
+        
+        if new_student.is_valid():
+            saved_student = new_student.save()
+            return Response(StudentAllSerializer(saved_student).data, status=HTTP_201_CREATED)
+        else:
+            return Response(new_student.errors, status=HTTP_400_BAD_REQUEST)
+
 
 class A_subject(APIView):
     def get(self, request, subject):
@@ -39,6 +49,7 @@ class A_subject(APIView):
             subject_return = next(
                 (sub for sub in all_subjects if sub["subject_name"] == subject.title())
             )
+            print(subject_return)
             return Response(subject_return)
         except StopIteration:
             return Response("Subject not found", status=HTTP_404_NOT_FOUND)
@@ -57,14 +68,10 @@ class All_subjects(APIView):
         
         if new_subject.is_valid():
             saved_subject = new_subject.save()
-            # print(SubjectSerializer(saved_subject).data)
+            print(SubjectSerializer(saved_subject).data)
             return Response(SubjectSerializer(saved_subject).data, status=HTTP_201_CREATED)
         else:
             return Response(new_subject.errors, status=HTTP_400_BAD_REQUEST)
-
-
-
-
 
 
 """
@@ -115,6 +122,7 @@ def get_subjects():
             # rounds by dividing the total grade by amount of students in the class
             avg_grade = round(total_grade / Decimal(subject_grades.count()), 2)
             # reassigns the subject.students to a count of how many students are in the class
+            # print(subject['students'])
             subject["students"] = len(subject["students"])
             # creates a new key:value pair in each subject
             subject["grade_average"] = float(avg_grade)

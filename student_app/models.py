@@ -13,6 +13,7 @@ class Subject(models.Model):
         unique=False, default="Mr. Cahan", null=False,
         validators=[validate_professor])
     # the related_name="students" in the Student class will create an attribute of Subject that contains all the students in that subject
+    
     def add_a_student(self, student_id):
         if self.students.count() == 31:
             raise Exception("This subject is full!")
